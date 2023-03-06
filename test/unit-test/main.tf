@@ -19,12 +19,12 @@ module "ec2_test_autoscaling_group" {
   ssm_parameters                = lookup(each.value, "ssm_parameters", null)
   autoscaling_group             = merge(local.ec2_test.autoscaling_group, lookup(each.value, "autoscaling_group", {}))
   autoscaling_schedules         = lookup(each.value, "autoscaling_schedules", local.autoscaling_schedules_default)
-  iam_resource_names_prefix = "ec2-test-asg"
-  instance_profile_policies = local.ec2_common_managed_policies
-  application_name          = local.application_name
-  region                    = local.region
-  subnet_ids                = ["subnet-0f9db8cb9bb95db16"]
-  tags                      = merge(local.tags, local.ec2_test.tags, try(each.value.tags, {}))
-  account_ids_lookup        = local.environment_management.account_ids
-  cloudwatch_metric_alarms  = {}
+  iam_resource_names_prefix     = "ec2-test-asg"
+  instance_profile_policies     = local.ec2_common_managed_policies
+  application_name              = local.application_name
+  region                        = local.region
+  subnet_ids                    = ["subnet-0f9db8cb9bb95db16"]
+  tags                          = merge(local.tags, local.ec2_test.tags, try(each.value.tags, {}))
+  account_ids_lookup            = local.environment_management.account_ids
+  cloudwatch_metric_alarms      = {}
 }
