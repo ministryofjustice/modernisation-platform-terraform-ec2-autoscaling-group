@@ -14,9 +14,3 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.testing-ci-user
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
-
-data "aws_vpc" "shared" {
-  tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}"
-  }
-}

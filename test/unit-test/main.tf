@@ -23,7 +23,7 @@ module "ec2_test_autoscaling_group" {
   instance_profile_policies     = local.ec2_common_managed_policies
   application_name              = local.application_name
   region                        = local.region
-  subnet_ids                    = ["subnet-0f9db8cb9bb95db16"]
+  subnet_ids                    = [data.aws_subnet.private_subnets_a.id]
   tags                          = merge(local.tags, local.ec2_test.tags, try(each.value.tags, {}))
   account_ids_lookup            = local.environment_management.account_ids
   cloudwatch_metric_alarms      = {}

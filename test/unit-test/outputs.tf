@@ -4,12 +4,12 @@ output "securtiy-group-id" {
 }
 output "key-pair" {
   description = "Key Pair"
-  value       = try(aws_key_pair.ec2-user.arn, "")
+  value       = try(aws_key_pair.ec2-terratest-user.arn, "")
 }
 
 output "iam-policy" {
   description = "IAM Policy"
-  value       = try(aws_iam_policy.ec2_common_policy.arn, "")
+  value       = try(aws_iam_policy.ec2_test_common_policy.arn, "")
 }
 
 output "ami-name" {
@@ -19,5 +19,5 @@ output "ami-name" {
 
 output "kms-key" {
   description = "KMS Key"
-  value       = try(aws_iam_policy.ec2_common_policy.arn, "")
+  value       = try(aws_iam_policy.ec2_test_common_policy.arn, "")
 }
