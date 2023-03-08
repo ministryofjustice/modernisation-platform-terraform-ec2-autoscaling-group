@@ -4,6 +4,11 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - '*.md'
+      - '.github/workflows/documentation.yml'
+
+permissions: {}
 
 jobs:
   docs:
