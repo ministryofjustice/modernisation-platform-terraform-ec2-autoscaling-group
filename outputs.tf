@@ -3,7 +3,7 @@ output "lb_target_groups" {
   value       = aws_lb_target_group.this
 }
 
-output "autoscaling_group_name" {
-  description = "map of aws_autoscaling_group resources"
-  value       = aws_autoscaling_group.this.name
+output "autoscaling_group" {
+  description = "map of aws_autoscaling_group details"
+  value       = aws_autoscaling_group.this
 }
