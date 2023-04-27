@@ -34,5 +34,5 @@ output "autoscaling_group" {
 
 output "autoscaling_group_name" {
   description = "aws_autoscaling_group name"
-  value       = element(module.ec2_test_autoscaling_group[*].dev-redhat-rhel610.autoscaling_group.name,0)
+  value       = element(module.ec2_test_autoscaling_group[*].dev-redhat-rhel610.autoscaling_group.name, 0)
 }
