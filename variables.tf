@@ -156,7 +156,7 @@ variable "autoscaling_group" {
     force_delete              = optional(bool)
     termination_policies      = optional(list(string))
     target_group_arns         = optional(list(string))
-    wait_for_capacity_timeout = optional(number)
+    wait_for_capacity_timeout = optional(string)
     initial_lifecycle_hooks = optional(map(object({
       default_result       = string
       heartbeat_timeout    = number
