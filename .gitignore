@@ -1,5 +1,6 @@
 .env
 .terraform/
+.terraform.lock.hcl
 coverage/
 venv/
 env/
@@ -9,5 +10,4 @@ env/
 .vscode
 *.code-workspace
 *.sha256
-terraform.tfstate
-terraform.tfstate.backup
+
