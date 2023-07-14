@@ -74,7 +74,7 @@ resource "aws_launch_template" "this" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = merge(local.tags, {
+    tags = merge(local.tags, var.instance.tags, {
       Name = var.name
     })
   }
@@ -82,7 +82,7 @@ resource "aws_launch_template" "this" {
   # all volumes will get tagged with the same name
   tag_specifications {
     resource_type = "volume"
-    tags = merge(local.tags, {
+    tags = merge(local.tags, var.ebs_volume_tags, {
       Name = "${var.name}-volume"
     })
   }
