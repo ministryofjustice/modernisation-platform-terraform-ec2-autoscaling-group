@@ -21,6 +21,7 @@ data "aws_iam_policy_document" "ec2_test_policy" {
     #checkov:skip=CKV_AWS_109:
     #checkov:skip=CKV_AWS_111:
     #checkov:skip=CKV_AWS_107:
+    #checkov:skip=CKV_AWS_356:
 
     sid    = "CustomEc2Policy"
     effect = "Allow"

@@ -187,6 +187,10 @@ resource "random_password" "this" {
 }
 
 resource "aws_ssm_parameter" "this" {
+  #checkov:skip=CKV_AWS_337: Ensure SSM parameters are using KMS CMK
+  # An AWS managed key is used at the moment.
+  # Fix ticket https://dsdmoj.atlassian.net/browse/DSOS-2011
+
   for_each = var.ssm_parameters != null ? var.ssm_parameters : {}
 
   name        = "/${var.ssm_parameters_prefix}${var.name}/${each.key}"
