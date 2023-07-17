@@ -27,7 +27,7 @@ variable "subnet_ids" {
 
 variable "tags" {
   type        = map(any)
-  description = "Default tags to be applied to resources"
+  description = "Default tags to be applied to resources.  Additional tags can be added to EBS volumes or EC2s, see instance.tags and ebs_volume_tags variables."
 }
 
 variable "account_ids_lookup" {
@@ -74,6 +74,7 @@ variable "instance" {
       enable_resource_name_dns_a_record    = optional(bool)
       hostname_type                        = string
     }))
+    tags = optional(map(string), {})
   })
 }
 
@@ -132,6 +133,12 @@ variable "ebs_volumes" {
     kms_key_id  = optional(string)
     no_device   = optional(bool)
   }))
+}
+
+variable "ebs_volume_tags" {
+  description = "Additional tags to apply to ebs volumes"
+  type        = map(string)
+  default     = {}
 }
 
 variable "iam_resource_names_prefix" {
