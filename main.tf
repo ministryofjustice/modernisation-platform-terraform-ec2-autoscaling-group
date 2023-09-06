@@ -250,7 +250,7 @@ resource "aws_iam_role" "this" {
   })
 }
 
-data "aws_iam_policy_document" "asm_parameter" {
+data "aws_iam_policy_document" "ssm_parameter" {
   statement {
     effect = "Allow"
     actions = flatten([
@@ -262,11 +262,11 @@ data "aws_iam_policy_document" "asm_parameter" {
   }
 }
 
-resource "aws_iam_role_policy" "asm_parameter" {
+resource "aws_iam_role_policy" "ssm_parameter" {
   count  = var.ssm_parameters != null ? 1 : 0
-  name   = "asm-parameter-access-${var.name}"
+  name   = "Ec2SSMParameterPolicy-${var.name}"
   role   = aws_iam_role.this.id
-  policy = data.aws_iam_policy_document.asm_parameter.json
+  policy = data.aws_iam_policy_document.ssm_parameter.json
 }
 
 data "aws_iam_policy_document" "lifecycle_hooks" {
