@@ -252,8 +252,11 @@ resource "aws_iam_role" "this" {
 
 data "aws_iam_policy_document" "asm_parameter" {
   statement {
-    effect  = "Allow"
-    actions = ["ssm:GetParameter"]
+    effect = "Allow"
+    actions = flatten([
+      "ssm:GetParameter",
+      length(aws_ssm_parameter.placeholder) != 0 ? ["ssm:PutParameter"] : []
+    ])
     #tfsec:ignore:aws-iam-no-policy-wildcards: acccess scoped to parameter path
     resources = ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.id}:parameter/${var.ssm_parameters_prefix}${var.name}/*"]
   }
