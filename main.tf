@@ -188,7 +188,7 @@ resource "random_password" "this" {
 
 # SSM parameters with values managed by terraform
 resource "aws_ssm_parameter" "this" {
-  #checkov:skip=CKV_AWS_337: Ensure SSM parameters are using KMS CMK. Up to the user of module to set this appropriately.
+  #checkov:skip=CKV2_AWS_34: AWS SSM Parameter should be Encrypted. SecureString is the default but can be changed by user if needed
 
   for_each = merge(
     local.ssm_parameters_value,
@@ -208,7 +208,7 @@ resource "aws_ssm_parameter" "this" {
 
 # Placeholder SSM parameters with values set elsewhere
 resource "aws_ssm_parameter" "placeholder" {
-  #checkov:skip=CKV_AWS_337: Ensure SSM parameters are using KMS CMK. Up to the user of module to set this appropriately.
+  #checkov:skip=CKV2_AWS_34: AWS SSM Parameter should be Encrypted. SecureString is the default but can be changed by user if needed
 
   for_each = local.ssm_parameters_default
 
