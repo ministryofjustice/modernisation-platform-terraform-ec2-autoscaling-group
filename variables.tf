@@ -200,13 +200,16 @@ variable "ssm_parameters_prefix" {
 }
 
 variable "ssm_parameters" {
-  description = "A map of SSM parameters to create.  If parameters are manually created, set to {} so IAM role still created"
+  description = "A map of SSM parameters to create. Set a specific value or a randomly generated value.  If neither random or value are set, a placeholder value is created which can be updated outside of terraform"
   type = map(object({
-    random = object({
+    description = optional(string)
+    type        = optional(string, "SecureString")
+    kms_key_id  = optional(string)
+    random = optional(object({
       length  = number
-      special = bool
-    })
-    description = string
+      special = optional(bool)
+    }))
+    value = optional(string)
   }))
   default = null
 }

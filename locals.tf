@@ -7,6 +7,27 @@ locals {
   }
   tags = merge(local.default_tags, local.ssm_parameters_prefix_tag, var.tags)
 
+  ssm_random_passwords = {
+    for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
+    key => value.random if value.random != null
+  }
+  ssm_parameters_value = {
+    for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
+    key => value if value.value != null
+  }
+  ssm_parameters_random = {
+    for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
+    key => merge(value, {
+      value = random_password.this[key].result
+    }) if value.value == null && value.random != null
+  }
+  ssm_parameters_default = {
+    for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
+    key => merge(value, {
+      value = "placeholder, overwrite me outside of terraform"
+    }) if value.value == null && value.random == null
+  }
+
   ami_block_device_mappings = {
     for bdm in data.aws_ami.this.block_device_mappings : bdm.device_name => bdm
   }
@@ -80,7 +101,7 @@ locals {
 
   user_data_args_ssm_params = {
     for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
-    "ssm_parameter_${key}" => aws_ssm_parameter.this[key].name
+    "ssm_parameter_${key}" => try(aws_ssm_parameter.this[key].name, aws_ssm_parameter.placeholder[key].name)
   }
 
   user_data_args = merge(local.user_data_args_ssm_params, try(var.user_data_cloud_init.args, {}))

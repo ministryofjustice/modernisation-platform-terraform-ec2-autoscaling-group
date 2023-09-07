@@ -180,30 +180,51 @@ resource "aws_autoscaling_schedule" "this" {
 }
 
 resource "random_password" "this" {
-  for_each = var.ssm_parameters != null ? var.ssm_parameters : {}
+  for_each = local.ssm_random_passwords
 
-  length  = each.value.random.length
-  special = lookup(each.value.random, "special", null)
+  length  = each.value.length
+  special = each.value.special
 }
 
+# SSM parameters with values managed by terraform
 resource "aws_ssm_parameter" "this" {
-  #checkov:skip=CKV_AWS_337: Ensure SSM parameters are using KMS CMK
-  # An AWS managed key is used at the moment.
-  # Fix ticket https://dsdmoj.atlassian.net/browse/DSOS-2011
+  #checkov:skip=CKV2_AWS_34: AWS SSM Parameter should be Encrypted. SecureString is the default but can be changed by user if needed
 
-  for_each = var.ssm_parameters != null ? var.ssm_parameters : {}
+  for_each = merge(
+    local.ssm_parameters_value,
+    local.ssm_parameters_random,
+  )
 
   name        = "/${var.ssm_parameters_prefix}${var.name}/${each.key}"
   description = each.value.description
-  type        = "SecureString"
-  value       = random_password.this[each.key].result
+  type        = each.value.type
+  key_id      = each.value.kms_key_id
+  value       = each.value.value
 
-  tags = merge(
-    local.tags,
-    {
-      Name = "${var.name}-${each.key}"
-    }
-  )
+  tags = merge(local.tags, {
+    Name = "${var.name}-${each.key}"
+  })
+}
+
+# Placeholder SSM parameters with values set elsewhere
+resource "aws_ssm_parameter" "placeholder" {
+  #checkov:skip=CKV2_AWS_34: AWS SSM Parameter should be Encrypted. SecureString is the default but can be changed by user if needed
+
+  for_each = local.ssm_parameters_default
+
+  name        = "/${var.ssm_parameters_prefix}${var.name}/${each.key}"
+  description = each.value.description
+  type        = each.value.type
+  key_id      = each.value.kms_key_id
+  value       = each.value.value
+
+  tags = merge(local.tags, {
+    Name = "${var.name}-${each.key}"
+  })
+
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 resource "aws_iam_role" "this" {
@@ -233,20 +254,23 @@ resource "aws_iam_role" "this" {
   })
 }
 
-data "aws_iam_policy_document" "asm_parameter" {
+data "aws_iam_policy_document" "ssm_parameter" {
   statement {
-    effect  = "Allow"
-    actions = ["ssm:GetParameter"]
+    effect = "Allow"
+    actions = flatten([
+      "ssm:GetParameter",
+      length(aws_ssm_parameter.placeholder) != 0 ? ["ssm:PutParameter"] : []
+    ])
     #tfsec:ignore:aws-iam-no-policy-wildcards: acccess scoped to parameter path
     resources = ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.id}:parameter/${var.ssm_parameters_prefix}${var.name}/*"]
   }
 }
 
-resource "aws_iam_role_policy" "asm_parameter" {
+resource "aws_iam_role_policy" "ssm_parameter" {
   count  = var.ssm_parameters != null ? 1 : 0
-  name   = "asm-parameter-access-${var.name}"
+  name   = "Ec2AsgSSMParameterPolicy-${var.name}"
   role   = aws_iam_role.this.id
-  policy = data.aws_iam_policy_document.asm_parameter.json
+  policy = data.aws_iam_policy_document.ssm_parameter.json
 }
 
 data "aws_iam_policy_document" "lifecycle_hooks" {
