@@ -1,6 +1,7 @@
 resource "aws_launch_template" "this" {
   name                                 = var.name
   disable_api_termination              = var.instance.disable_api_termination
+  disable_api_stop                     = var.instance.disable_api_stop
   ebs_optimized                        = data.aws_ec2_instance_type.this.ebs_optimized_support == "unsupported" ? false : true
   image_id                             = data.aws_ami.this.id
   instance_initiated_shutdown_behavior = "terminate"
