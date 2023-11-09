@@ -228,6 +228,21 @@ resource "aws_ssm_parameter" "placeholder" {
   }
 }
 
+resource "aws_secretsmanager_secret" "placeholder" {
+  # skipped check to keep consistent behaviour between ssm params and secrets
+  # Rotation can be added later as a configurable option. Some will want it, for some it will break things
+  #checkov:skip=CKV2_AWS_57: Ensure Secrets Manager secrets should have automatic rotation enabled
+  for_each = var.secretsmanager_secrets
+
+  name        = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
+  description = each.value.description
+  kms_key_id  = each.value.kms_key_id
+
+  tags = merge(local.tags, {
+    Name = "${var.name}-${each.key}"
+  })
+}
+
 resource "aws_iam_role" "this" {
   name                 = "${var.iam_resource_names_prefix}-role-${var.name}"
   path                 = "/"
@@ -255,7 +270,7 @@ resource "aws_iam_role" "this" {
   })
 }
 
-data "aws_iam_policy_document" "ssm_parameter" {
+data "aws_iam_policy_document" "ssm_params_and_secrets" {
   statement {
     effect = "Allow"
     actions = flatten([
@@ -265,14 +280,24 @@ data "aws_iam_policy_document" "ssm_parameter" {
     #tfsec:ignore:aws-iam-no-policy-wildcards: acccess scoped to parameter path
     resources = ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.id}:parameter/${var.ssm_parameters_prefix}${var.name}/*"]
   }
+  statement {
+    effect = "Allow"
+    actions = flatten([
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:PutSecretValue"
+    ])
+    #tfsec:ignore:aws-iam-no-policy-wildcards: acccess scoped to parameter path
+    resources = ["arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.id}:secret:/${var.secretsmanager_secrets_prefix}${var.name}/*"]
+  }
 }
 
-resource "aws_iam_role_policy" "ssm_parameter" {
-  count  = var.ssm_parameters != null ? 1 : 0
-  name   = "Ec2AsgSSMParameterPolicy-${var.name}"
+resource "aws_iam_role_policy" "ssm_params_and_secrets" {
+  count  = var.ssm_parameters != null && var.secretsmanager_secrets != null ? 1 : 0
+  name   = "Ec2AsgSSMParamsAndSecretsPolicy-${var.name}"
   role   = aws_iam_role.this.id
-  policy = data.aws_iam_policy_document.ssm_parameter.json
+  policy = data.aws_iam_policy_document.ssm_params_and_secrets.json
 }
+
 
 data "aws_iam_policy_document" "lifecycle_hooks" {
   statement {
