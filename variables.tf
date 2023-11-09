@@ -63,7 +63,7 @@ variable "instance" {
   description = "EC2 launch template / instance settings, see aws_instance documentation"
   type = object({
     disable_api_termination      = bool
-    disable_api_stop             = bool
+    disable_api_stop             = optional(bool, false)
     instance_type                = string
     key_name                     = string
     monitoring                   = optional(bool, true)
