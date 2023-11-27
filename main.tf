@@ -245,7 +245,7 @@ resource "aws_secretsmanager_secret" "fixed" {
 
   name                    = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
   description             = each.value.description
-  kms_key_id              = each.value.kms_key_id != null ? try(var.environment.kms_keys[each.value.kms_key_id].arn, each.value.kms_key_id) : null
+  kms_key_id              = each.value.kms_key_id
   recovery_window_in_days = each.value.recovery_window_in_days
 
   tags = merge(local.tags, {
@@ -260,7 +260,7 @@ resource "aws_secretsmanager_secret" "placeholder" {
 
   name                    = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
   description             = each.value.description
-  kms_key_id              = each.value.kms_key_id != null ? try(var.environment.kms_keys[each.value.kms_key_id].arn, each.value.kms_key_id) : null
+  kms_key_id              = each.value.kms_key_id
   recovery_window_in_days = each.value.recovery_window_in_days
 
   tags = merge(local.tags, {
