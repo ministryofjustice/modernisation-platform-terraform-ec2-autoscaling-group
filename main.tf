@@ -228,19 +228,65 @@ resource "aws_ssm_parameter" "placeholder" {
   }
 }
 
-resource "aws_secretsmanager_secret" "placeholder" {
-  # skipped check to keep consistent behaviour between ssm params and secrets
-  # Rotation can be added later as a configurable option. Some will want it, for some it will break things
-  #checkov:skip=CKV2_AWS_57: Ensure Secrets Manager secrets should have automatic rotation enabled
-  for_each = var.secretsmanager_secrets
+resource "random_password" "secrets" {
+  for_each = local.secretsmanager_random_passwords
 
-  name        = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
-  description = each.value.description
-  kms_key_id  = each.value.kms_key_id
+  length  = each.value.length
+  special = each.value.special
+}
+
+resource "aws_secretsmanager_secret" "fixed" {
+  # skipped check as the secret value is defined by terraform so cannot be rotated by AWS
+  #checkov:skip=CKV2_AWS_57: Ensure Secrets Manager secrets should have automatic rotation enabled
+  for_each = merge(
+    local.secretsmanager_secrets_value,
+    local.secretsmanager_secrets_random,
+  )
+
+  name                    = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
+  description             = each.value.description
+  kms_key_id              = each.value.kms_key_id != null ? try(var.environment.kms_keys[each.value.kms_key_id].arn, each.value.kms_key_id) : null
+  recovery_window_in_days = each.value.recovery_window_in_days
 
   tags = merge(local.tags, {
     Name = "${var.name}-${each.key}"
   })
+}
+
+resource "aws_secretsmanager_secret" "placeholder" {
+  # Rotation can be added later as a configurable option
+  #checkov:skip=CKV2_AWS_57: Ensure Secrets Manager secrets should have automatic rotation enabled
+  for_each = local.secretsmanager_secrets_default
+
+  name                    = "/${var.secretsmanager_secrets_prefix}${var.name}/${each.key}"
+  description             = each.value.description
+  kms_key_id              = each.value.kms_key_id != null ? try(var.environment.kms_keys[each.value.kms_key_id].arn, each.value.kms_key_id) : null
+  recovery_window_in_days = each.value.recovery_window_in_days
+
+  tags = merge(local.tags, {
+    Name = "${var.name}-${each.key}"
+  })
+}
+
+resource "aws_secretsmanager_secret_version" "fixed" {
+  for_each = merge(
+    local.secretsmanager_secrets_value,
+    local.secretsmanager_secrets_random,
+  )
+
+  secret_id     = aws_secretsmanager_secret.fixed[each.key].id
+  secret_string = each.value.value
+}
+
+resource "aws_secretsmanager_secret_version" "placeholder" {
+  for_each = local.secretsmanager_secrets_default
+
+  secret_id     = aws_secretsmanager_secret.placeholder[each.key].id
+  secret_string = each.value.value
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
 }
 
 resource "aws_iam_role" "this" {
