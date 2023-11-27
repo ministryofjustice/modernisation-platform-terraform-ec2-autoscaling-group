@@ -278,17 +278,6 @@ resource "aws_secretsmanager_secret_version" "fixed" {
   secret_string = each.value.value
 }
 
-resource "aws_secretsmanager_secret_version" "placeholder" {
-  for_each = local.secretsmanager_secrets_default
-
-  secret_id     = aws_secretsmanager_secret.placeholder[each.key].id
-  secret_string = each.value.value
-
-  lifecycle {
-    ignore_changes = [secret_string]
-  }
-}
-
 resource "aws_iam_role" "this" {
   name                 = "${var.iam_resource_names_prefix}-role-${var.name}"
   path                 = "/"
