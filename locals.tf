@@ -23,9 +23,7 @@ locals {
   }
   ssm_parameters_default = {
     for key, value in var.ssm_parameters != null ? var.ssm_parameters : {} :
-    key => merge(value, {
-      value = "placeholder, overwrite me outside of terraform"
-    }) if value.value == null && value.random == null
+    key => value if value.value == null && value.random == null
   }
 
   secretsmanager_random_passwords = {
