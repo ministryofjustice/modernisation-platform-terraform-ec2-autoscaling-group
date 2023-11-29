@@ -253,6 +253,16 @@ resource "aws_secretsmanager_secret" "fixed" {
   })
 }
 
+resource "aws_secretsmanager_secret_version" "fixed" {
+  for_each = merge(
+    local.secretsmanager_secrets_value,
+    local.secretsmanager_secrets_random,
+  )
+
+  secret_id     = aws_secretsmanager_secret.fixed[each.key].id
+  secret_string = each.value.value
+}
+
 resource "aws_secretsmanager_secret" "placeholder" {
   # Rotation can be added later as a configurable option
   #checkov:skip=CKV2_AWS_57: Ensure Secrets Manager secrets should have automatic rotation enabled
@@ -266,16 +276,6 @@ resource "aws_secretsmanager_secret" "placeholder" {
   tags = merge(local.tags, {
     Name = "${var.name}-${each.key}"
   })
-}
-
-resource "aws_secretsmanager_secret_version" "fixed" {
-  for_each = merge(
-    local.secretsmanager_secrets_value,
-    local.secretsmanager_secrets_random,
-  )
-
-  secret_id     = aws_secretsmanager_secret.fixed[each.key].id
-  secret_string = each.value.value
 }
 
 resource "aws_iam_role" "this" {
