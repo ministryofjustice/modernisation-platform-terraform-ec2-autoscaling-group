@@ -309,7 +309,7 @@ data "aws_iam_policy_document" "ssm_params_and_secrets" {
   count = var.ssm_parameters != null || var.secretsmanager_secrets != null ? 1 : 0
   dynamic "statement" {
     for_each = var.ssm_parameters != null ? ["ssm"] : []
-    block {
+    content {
       effect = "Allow"
       actions = flatten([
         "ssm:GetParameter",
@@ -321,7 +321,7 @@ data "aws_iam_policy_document" "ssm_params_and_secrets" {
   }
   dynamic "statement" {
     for_each = var.secretsmanager_secrets != null ? ["secret"] : []
-    block {
+    content {
       effect = "Allow"
       actions = flatten([
         "secretsmanager:GetSecretValue",
