@@ -320,7 +320,7 @@ data "aws_iam_policy_document" "ssm_params_and_secrets" {
     }
   }
   dynamic "statement" {
-    for_each = var.ssm_parameters != null ? ["secret"] : []
+    for_each = var.secretsmanager_secrets != null ? ["secret"] : []
     block {
       effect = "Allow"
       actions = flatten([
