@@ -222,12 +222,18 @@ variable "ssm_parameters" {
 }
 
 variable "secretsmanager_secrets" {
-  description = "A map of secretsmanager secrets to create. No value is created, add a value outside of terraform"
+  description = "A map of secretsmanager secrets to create. Set a specific value or a randomly generated value.  If neither random or value are set, a placeholder value is created which can be updated outside of terraform"
   type = map(object({
-    description = optional(string)
-    kms_key_id  = optional(string)
+    description             = optional(string)
+    kms_key_id              = optional(string)
+    recovery_window_in_days = optional(number)
+    random = optional(object({
+      length  = number
+      special = optional(bool)
+    }))
+    value = optional(string)
   }))
-  default = {}
+  default = null
 }
 
 variable "lb_target_groups" {

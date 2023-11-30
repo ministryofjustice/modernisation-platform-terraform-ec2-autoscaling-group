@@ -28,6 +28,25 @@ locals {
     }) if value.value == null && value.random == null
   }
 
+  secretsmanager_random_passwords = {
+    for key, value in var.secretsmanager_secrets != null ? var.secretsmanager_secrets : {} :
+    key => value.random if value.random != null
+  }
+  secretsmanager_secrets_value = {
+    for key, value in var.secretsmanager_secrets != null ? var.secretsmanager_secrets : {} :
+    key => value if value.value != null
+  }
+  secretsmanager_secrets_random = {
+    for key, value in var.secretsmanager_secrets != null ? var.secretsmanager_secrets : {} :
+    key => merge(value, {
+      value = random_password.secrets[key].result
+    }) if value.value == null && value.random != null
+  }
+  secretsmanager_secrets_default = {
+    for key, value in var.secretsmanager_secrets != null ? var.secretsmanager_secrets : {} :
+    key => value if value.value == null && value.random == null
+  }
+
   ami_block_device_mappings = {
     for bdm in data.aws_ami.this.block_device_mappings : bdm.device_name => bdm
   }
