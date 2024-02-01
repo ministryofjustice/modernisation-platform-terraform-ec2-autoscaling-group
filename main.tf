@@ -385,6 +385,7 @@ resource "aws_lb_target_group" "this" {
       matcher             = health_check.value.matcher
       path                = health_check.value.path
       port                = health_check.value.port
+      protocol            = health_check.value.protocol
       timeout             = health_check.value.timeout
       unhealthy_threshold = health_check.value.unhealthy_threshold
     }
