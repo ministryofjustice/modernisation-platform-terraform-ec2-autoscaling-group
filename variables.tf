@@ -241,7 +241,6 @@ variable "lb_target_groups" {
   type = map(object({
     port                 = optional(number)
     protocol             = optional(string)
-    target_type          = string
     deregistration_delay = optional(number)
     health_check = optional(object({
       enabled             = optional(bool)
@@ -250,6 +249,7 @@ variable "lb_target_groups" {
       matcher             = optional(string)
       path                = optional(string)
       port                = optional(number)
+      protocol            = optional(string)
       timeout             = optional(number)
       unhealthy_threshold = optional(number)
     }))
