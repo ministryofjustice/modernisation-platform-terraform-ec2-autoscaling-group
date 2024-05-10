@@ -248,7 +248,7 @@ resource "aws_secretsmanager_secret" "fixed" {
   kms_key_id              = each.value.kms_key_id
   recovery_window_in_days = each.value.recovery_window_in_days
 
-  tags = merge(local.tags, {
+  tags = merge(local.tags, each.value.tags, {
     Name = "${var.name}-${each.key}"
   })
 }
@@ -273,7 +273,7 @@ resource "aws_secretsmanager_secret" "placeholder" {
   kms_key_id              = each.value.kms_key_id
   recovery_window_in_days = each.value.recovery_window_in_days
 
-  tags = merge(local.tags, {
+  tags = merge(local.tags, each.value.tags, {
     Name = "${var.name}-${each.key}"
   })
 }

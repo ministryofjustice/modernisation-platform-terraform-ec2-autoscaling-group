@@ -232,6 +232,7 @@ variable "secretsmanager_secrets" {
       special = optional(bool)
     }))
     value = optional(string)
+    tags = optional(map(string), {})
   }))
   default = null
 }
