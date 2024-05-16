@@ -145,7 +145,7 @@ resource "aws_autoscaling_group" "this" {
     content {
       pool_state                  = warm_pool.value.pool_state
       min_size                    = warm_pool.value.min_size
-      max_group_prepared_capacity = coalesce(warm_pool.value.max_group_prepared_capacity, var.autoscaling_group.max_size)
+      max_group_prepared_capacity = warm_pool.value.max_group_prepared_capacity
 
       instance_reuse_policy {
         reuse_on_scale_in = warm_pool.value.reuse_on_scale_in
