@@ -113,7 +113,7 @@ resource "aws_autoscaling_group" "this" {
 
   launch_template {
     id      = aws_launch_template.this.id
-    version = "$Default"
+    version = aws_launch_template.this.latest_version
   }
 
   dynamic "initial_lifecycle_hook" {
