@@ -298,7 +298,7 @@ resource "aws_iam_role" "this" {
     }
   )
 
-  managed_policy_arns = var.instance_profile_policies
+managed_policy_arns = concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies)
 
   tags = merge(local.tags, {
     Name = "${var.iam_resource_names_prefix}-role-${var.name}"
