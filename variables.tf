@@ -289,4 +289,3 @@ variable "cloudwatch_metric_alarms" {
   }))
   default = {}
 }
-
