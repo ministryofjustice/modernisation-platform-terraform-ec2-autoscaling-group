@@ -1,6 +1,6 @@
 module test
 
-go 1.19
+go 1.23
 
 require (
 	github.com/gruntwork-io/terratest v0.47.2
