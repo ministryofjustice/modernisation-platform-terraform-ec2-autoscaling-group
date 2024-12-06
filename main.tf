@@ -298,11 +298,18 @@ resource "aws_iam_role" "this" {
     }
   )
 
-  managed_policy_arns = concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies)
-
   tags = merge(local.tags, {
     Name = "${var.iam_resource_names_prefix}-role-${var.name}"
   })
+}
+
+# exclusive policy attachment for managed policies
+resource "aws_iam_role_policy_attachments_exclusive" "this" {
+  role_name = aws_iam_role.this.name
+  policy_arns = concat(
+    ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"],
+    var.instance_profile_policies
+  )
 }
 
 data "aws_iam_policy_document" "ssm_params_and_secrets" {
