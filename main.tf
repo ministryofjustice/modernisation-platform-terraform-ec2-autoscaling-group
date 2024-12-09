@@ -298,13 +298,16 @@ resource "aws_iam_role" "this" {
     }
   )
 
-  managed_policy_arns = concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies)
-
   tags = merge(local.tags, {
     Name = "${var.iam_resource_names_prefix}-role-${var.name}"
   })
 }
-
+# Attach instance profile policies
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each   = { for k, v in var.instance_profile_policies : k => v }
+  role       = aws_iam_role.this.name
+  policy_arn = each.value
+}
 data "aws_iam_policy_document" "ssm_params_and_secrets" {
   count = var.ssm_parameters != null || var.secretsmanager_secrets != null ? 1 : 0
   dynamic "statement" {
