@@ -307,10 +307,9 @@ resource "aws_iam_role" "this" {
 
 # IAM role policy attachment
 resource "aws_iam_role_policy_attachment" "this" {
-  for_each   = toset(var.instance_profile_policies)
+  count      = length(var.instance_profile_policies)
   role       = aws_iam_role.this.name
-  policy_arn = each.value
-
+  policy_arn = var.instance_profile_policies[count.index]
 }
 
 data "aws_iam_policy_document" "ssm_params_and_secrets" {
