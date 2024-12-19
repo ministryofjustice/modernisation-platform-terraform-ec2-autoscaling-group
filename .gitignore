@@ -10,4 +10,6 @@ env/
 .vscode
 *.code-workspace
 *.sha256
+terraform.tfstate
+terraform.tfstate.backup
 
