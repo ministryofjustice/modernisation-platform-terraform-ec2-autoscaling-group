@@ -149,7 +149,10 @@ variable "iam_resource_names_prefix" {
 }
 
 variable "instance_profile_policies" {
-  type        = list(string)
+  type = map(string)
+  default = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  }
   description = "A list of managed IAM policy document ARNs to be attached to the instance profile"
 }
 
