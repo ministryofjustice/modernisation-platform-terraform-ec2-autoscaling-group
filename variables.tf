@@ -25,6 +25,12 @@ variable "skip_iam_role_policy_attachment" {
   type        = bool
   default     = false
 }
+
+variable "default_policy_arn" {
+  description = "Default policy ARN to attach"
+  type        = string
+  default     = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
 variable "subnet_ids" {
   type        = list(string)
   description = "List of subnet ids given to the ASG to set the associated AZs (and therefore redundancy of the ASG instances)"

@@ -18,7 +18,7 @@ module "ec2_test_autoscaling_group" {
   secretsmanager_secrets_prefix   = lookup(each.value, "secretsmanager_secrets_prefix", "test/")
   secretsmanager_secrets          = lookup(each.value, "secretsmanager_secrets", null)
   ssm_parameters_prefix           = lookup(each.value, "ssm_parameters_prefix", "test/")
-  skip_iam_role_policy_attachment = true
+  skip_iam_role_policy_attachment = false
   ssm_parameters                  = lookup(each.value, "ssm_parameters", null)
   autoscaling_group               = merge(local.ec2_test.autoscaling_group, lookup(each.value, "autoscaling_group", {}))
   autoscaling_schedules           = lookup(each.value, "autoscaling_schedules", local.autoscaling_schedules_default)
