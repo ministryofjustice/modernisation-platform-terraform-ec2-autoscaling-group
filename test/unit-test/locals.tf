@@ -10,8 +10,9 @@ locals {
 
   # create list of common managed policies that can be attached to ec2 instance profiles
   ec2_common_managed_policies = [
-    aws_iam_policy.ec2_test_common_policy.arn
+    aws_iam_policy.ec2_test_common_policy.arn,
   ]
+
 
   tags = {
     component = "test"
