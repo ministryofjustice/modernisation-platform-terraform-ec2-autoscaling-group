@@ -305,10 +305,9 @@ resource "aws_iam_role" "this" {
 
 # IAM role policy attachment
 resource "aws_iam_role_policy_attachment" "this" {
-  count = var.skip_iam_role_policy_attachment ? length(var.instance_profile_policies) : length(var.instance_profile_policies) + 1
-  role  = aws_iam_role.this.name
-
-  policy_arn = var.skip_iam_role_policy_attachment && count.index == 0 ? var.instance_profile_policies[count.index] : element(concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies), count.index)
+  count      = var.skip_iam_role_policy_attachment ? 0 : length(concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies))
+  role       = aws_iam_role.this.name
+  policy_arn = element(concat(["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"], var.instance_profile_policies), count.index)
 }
 
 data "aws_iam_policy_document" "ssm_params_and_secrets" {
