@@ -117,8 +117,8 @@ No modules.
 | <a name="output_lb_target_groups"></a> [lb\_target\_groups](#output\_lb\_target\_groups) | map of aws\_lb\_target\_group resources |
 <!-- END_TF_DOCS -->
 
-[Standards Link]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-ec2-autoscaling-group "Repo standards badge."
-[Standards Icon]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-ec2-autoscaling-group/badge
+[Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-ec2-autoscaling-group "Repo standards badge."
+[Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-ec2-autoscaling-group/badge
 [Format Code Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group/format-code.yml?labelColor=231f20&style=for-the-badge&label=Formate%20Code
 [Format Code Link]: https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group/actions/workflows/format-code.yml
 [Scorecards Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group/scorecards.yml?branch=main&labelColor=231f20&style=for-the-badge&label=Scorecards
