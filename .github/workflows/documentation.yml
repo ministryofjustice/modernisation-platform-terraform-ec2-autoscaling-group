@@ -32,5 +32,3 @@ jobs:
       uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        pr_title: "Automated Update: Terraform-Docs"
-        pr_body: "terraform-docs: automated action."
