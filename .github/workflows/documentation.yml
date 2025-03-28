@@ -28,6 +28,9 @@ jobs:
         output-method: inject
         git-push: "false"
 
+    - name: Set up Git user
+      run: bash ./scripts/git-setup.sh
+
     - name: Run Signed Commit Action
       uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
       with:
