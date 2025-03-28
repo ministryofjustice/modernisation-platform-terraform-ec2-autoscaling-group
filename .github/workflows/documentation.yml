@@ -27,3 +27,5 @@ jobs:
         output-file: README.md
         output-method: inject
         git-push: "true"
+        git-push-user-email: "modernisation-platform+github@digital.justice.gov.uk"
+        git-push-user-name: "modernisation-platform-ci"
