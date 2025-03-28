@@ -30,6 +30,8 @@ jobs:
         output-file: README.md
         output-method: inject
         git-push: "false"
+        git-push-user-email: "modernisation-platform+github@digital.justice.gov.uk"
+        git-push-user-name: "modernisation-platform-ci"
 
     - name: Run Signed Commit Action
       uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@feature/signed-commits-branch-check # test branch
