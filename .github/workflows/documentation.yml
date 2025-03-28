@@ -29,6 +29,11 @@ jobs:
         output-method: inject
         git-push: "false"
 
+    - name: Fix Git Permissions
+      run: |
+        sudo chown -R $(whoami) .git || true
+        sudo chmod -R u+rw .git || true
+
     - name: Run Signed Commit Action
       uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@feature/signed-commits-branch-check # test branch
       with:
