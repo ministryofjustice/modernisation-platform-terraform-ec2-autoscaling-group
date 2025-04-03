@@ -34,6 +34,6 @@ jobs:
         git-push-user-name: "modernisation-platform-ci"
 
     - name: Run Signed Commit Action
-      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@feature/signed-commits-branch-check # test branch
+      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ec324eeaf046fd2b8332c4cabf81dc1e1c36b98e # test branch
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
