@@ -8,7 +8,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      action-dependencies:
+        patterns:
+          - "*"
   - package-ecosystem: "gomod"
     directory: "/test"
     schedule:
       interval: "daily"
+    groups:
+      gomod-dependencies:
+        patterns:
+          - "*"
