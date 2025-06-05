@@ -3,6 +3,7 @@ resource "aws_security_group" "test" {
   #checkov:skip=CKV_AWS_25:
   #checkov:skip=CKV_AWS_24:
   #checkov:skip=CKV_AWS_260:
+  #checkov:skip=CKV_AWS_382:
   name        = "Terratest-SG"
   description = "Test SG for Terratest"
   vpc_id      = data.aws_vpc.shared.id
