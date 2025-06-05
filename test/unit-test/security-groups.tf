@@ -3,7 +3,6 @@ resource "aws_security_group" "test" {
   #checkov:skip=CKV_AWS_25:
   #checkov:skip=CKV_AWS_24:
   #checkov:skip=CKV_AWS_260:
-  #checkov:skip=CKV_AWS_382:
   name        = "Terratest-SG"
   description = "Test SG for Terratest"
   vpc_id      = data.aws_vpc.shared.id
@@ -11,8 +10,7 @@ resource "aws_security_group" "test" {
     from_port        = 0
     to_port          = 6000
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = ["10.26.0.0/21"]
     description      = "Test SG for Terratest"
 
 
@@ -22,8 +20,7 @@ resource "aws_security_group" "test" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = ["10.26.0.0/21"]
     description      = "Test SG for Terratest"
 
   }
