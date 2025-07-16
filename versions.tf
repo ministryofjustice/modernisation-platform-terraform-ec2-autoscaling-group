@@ -1,12 +1,12 @@
 terraform {
   required_providers {
     aws = {
-      version               = "~> 5.0"
+      version               = "~> 6.0"
       source                = "hashicorp/aws"
       configuration_aliases = [aws.core-vpc]
     }
     cloudinit = {
-      version = "~> 2.3.5"
+      version = "~> 2.3"
       source  = "hashicorp/cloudinit"
     }
 
@@ -16,9 +16,9 @@ terraform {
     }
 
     time = {
-      version = "> 0.9.0"
+      version = "~> 0.13"
       source  = "hashicorp/time"
     }
   }
-  required_version = ">= 1.1.7"
+  required_version = "~> 1.0"
 }
