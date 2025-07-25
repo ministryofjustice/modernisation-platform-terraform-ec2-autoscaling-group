@@ -12,3 +12,4 @@ env/
 *.sha256
 terraform.tfstate
 terraform.tfstate.backup
+megalinter-reports
