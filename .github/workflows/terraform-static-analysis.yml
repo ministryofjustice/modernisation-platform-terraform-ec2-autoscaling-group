@@ -29,7 +29,7 @@ jobs:
       - name: ⛓️ SLSA Supply Chain Security
         uses: ministryofjustice/devsecops-actions/sca/slsa@3e9410cef31dd9cec64ad567efc959afd88a591c
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -60,7 +60,7 @@ jobs:
       - name: ⛓️ SLSA Supply Chain Security
         uses: ministryofjustice/devsecops-actions/sca/slsa@3e9410cef31dd9cec64ad567efc959afd88a591c
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@5b44b387694dfa249cfa2dcf289ca871abe9e3e2 # v5.0.1
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@544c7bb214758a098b054014fa16ab86bad305b5 # v6.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
