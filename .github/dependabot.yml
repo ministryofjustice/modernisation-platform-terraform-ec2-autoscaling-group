@@ -4,10 +4,14 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
     groups:
       action-dependencies:
         patterns:
@@ -16,6 +20,8 @@ updates:
     directory: "/test"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
     groups:
       gomod-dependencies:
         patterns:
