@@ -88,6 +88,10 @@ resource "aws_launch_template" "this" {
     })
   }
 
+  tags = merge(local.tags, {
+    Name = var.name
+  })
+
   lifecycle {
     # description and tags will be updated by Image Builder
     ignore_changes = [
@@ -373,6 +377,10 @@ resource "aws_iam_instance_profile" "this" {
   name = "${var.iam_resource_names_prefix}-profile-${var.name}"
   role = aws_iam_role.this.name
   path = "/"
+
+  tags = merge(local.tags, {
+    Name = "${var.iam_resource_names_prefix}-profile-${var.name}"
+  })
 }
 
 resource "aws_lb_target_group" "this" {
