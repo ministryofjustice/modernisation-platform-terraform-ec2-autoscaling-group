@@ -318,6 +318,30 @@ resource "aws_iam_role_policy_attachment" "this" {
   policy_arn = each.value
 }
 
+data "aws_iam_policy_document" "session_manager_cloudwatch_logs" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents",
+    ]
+
+    resources = [
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:session-manager-logs",
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:session-manager-logs:log-stream:*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "session_manager_cloudwatch_logs" {
+  name   = "SessionManagerCloudWatchLogs"
+  role   = aws_iam_role.this.id
+  policy = data.aws_iam_policy_document.session_manager_cloudwatch_logs.json
+}
+
 data "aws_iam_policy_document" "ssm_params_and_secrets" {
   count = var.ssm_parameters != null || var.secretsmanager_secrets != null ? 1 : 0
   dynamic "statement" {
