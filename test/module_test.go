@@ -27,7 +27,7 @@ func TestModule(t *testing.T) {
 	assert.NotEmpty(t, secGroupId)
 	assert.Regexp(t, regexp.MustCompile(`^arn:aws:ec2:eu-west-2:836052629367:key-pair/*`), keyPair)
 	assert.Regexp(t, regexp.MustCompile(`^arn:aws:iam:*`), iamPolicy)
-	assert.Regexp(t, regexp.MustCompile(`^RHEL-7.9_HVM-*`), amiName)
+	assert.Regexp(t, regexp.MustCompile(`^RHEL-9\.`), amiName)
 	assert.Regexp(t, regexp.MustCompile(`^arn:aws:iam::836052629367:policy/*`), kmsKey)
 	assert.Regexp(t, regexp.MustCompile(`^dev-redhat-rhel610`), autoscaling_group_name)
 
